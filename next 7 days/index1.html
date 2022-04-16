@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script
+       src="https://kit.fontawesome.com/24c494a6b6.js"
+       crossorigin="anonymous"
+     ></script>
+     <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@200&family=Poppins:wght@300&family=Roboto:wght@300;500&display=swap" rel="stylesheet">
+    <style>
+        
+        #box{
+            height: 270px;
+            width: 200px;
+            background-color: #333;
+            color: white;
+            border-radius: 10px;
+            border:  1px solid grey;
+            
+        }
+        #container1{
+            margin-top: 30px;
+            background-color: #333;
+            display: grid;
+            grid-template-columns: repeat(6,1fr);
+        }
+        h3{
+            font-family: 'Poppins', sans-serif;
+            margin-bottom: -5px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <input type="text" id="city">
+    <button onclick="getData1()">Get Forecast Report</button>
+    <div id="div"></div>
+
+    <div id="container1"></div>
+    
+</body>
+</html>
+
+<script>
+    
+
+ function getData1() 
+ {
+     let city = document.querySelector("#city").value;
+      const url = `http://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=0d9523c0cddd9c1285bd846ff9ec829d`
+
+      fetch(url) 
+      .then(function (res) {
+          return res.json()
+      })
+      .then(function (res) {
+           console.log(res.city.name)
+           
+          append1(res.list[0])
+          append1(res.list[8])
+          append1(res.list[16])
+          append1(res.list[24])
+          append1(res.list[32])
+          append1(res.list[39])
+          
+         
+      })
+      .catch(function (err) {
+       let input = document.querySelector("#city");
+       alert("It's Not a City Please Enter Valid City Name")
+      })
+
+ }
+ 
+
+ 
+ function append1(data) 
+ 
+  {
+      
+   
+     let container1 = document.querySelector("#container1");
+     
+
+     let div = document.createElement("div");
+     div.setAttribute("id","box")
+
+     
+     let date = document.createElement("h3");
+     let current = document.createElement("h3");
+     let min = document.createElement("h3");
+     let max = document.createElement("h3");
+     let img = document.createElement("img");
+     
+     let cur = Math.ceil(data.main.temp/9.85645161290322580645161);
+     let minc = Math.ceil(data.main.temp_min/9.85645161290322580645161);
+     let maxc = Math.ceil(data.main.temp_max/9.85645161290322580645161);
+     
+
+
+     date.innerText= `Date: ${data.dt_txt}`;
+     current.innerText= `Current: ${cur}°C`;
+     min.innerText= `Lower: ${minc}°C`;
+     max.innerText= `Higher: ${maxc}°C`
+     img.src="https://ssl.gstatic.com/onebox/weather/48/partly_cloudy.png"
+    
+
+
+
+     div.append(date,img,current,min,max)
+     container1.append(div)
+     
+  }
+
+ 
+
+</script>
+
